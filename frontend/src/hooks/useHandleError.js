@@ -29,8 +29,7 @@ export const useHandleError = () => {
           sessionExpiryToastShownUntil = Date.now() + 3000;
 
           const proceedToLogout = () => {
-            removeCookie('token');
-            removeCookie('username');
+            removeCookie('yt-token');
             if (shouldShowSessionToast) {
               toast.dismiss();
               MessageBox('error', apiMessage || 'Session expired, please sign in again.');

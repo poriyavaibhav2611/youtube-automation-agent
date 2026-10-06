@@ -1,7 +1,7 @@
 import { getCookie } from './cookies';
 
 export const getApiHeaders = () => {
-  const token = getCookie('token');
+  const token = getCookie('yt-token');
   return {
     'Content-Type': 'application/json',
     ...(token && { Authorization: `Bearer ${token}` }),

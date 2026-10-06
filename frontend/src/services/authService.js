@@ -23,3 +23,12 @@ export const logout = async () => {
     return null;
   }
 };
+
+export const getProfile = async () => {
+  try {
+    const response = await apiService.get('/auth/profile');
+    return response;
+  } catch (err) {
+    return null;
+  }
+};

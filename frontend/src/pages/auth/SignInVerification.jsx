@@ -31,9 +31,8 @@ const SignInVerification = () => {
     setLoading(true);
     try {
       const data = await loginVerify(otp, token);
-      setCookie('token', data.token);
-      setCookie('username', data.username || 'Admin');
-      setUser({ username: data.username || 'Admin' });
+      setCookie('yt-token', data.token);
+      setUser({ name: data.name || 'Admin', email: data.email });
       navigate('/');
     } catch (error) {
       handleError(error);
@@ -57,14 +56,14 @@ const SignInVerification = () => {
 
       <div className="w-full max-w-md p-8 rounded-xl bg-[#1c1c1c] border border-[#2e2e32] shadow-xl">
         
-        <div className="text-left mb-8">
+        <div className="text-center mb-8">
           <h2 className="text-2xl font-semibold text-white tracking-tight mb-1">
             Verify Account
           </h2>
           <p className="text-[#a1a1aa] text-[13px]">Enter the 6-digit 2FA code</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-8">
           <div className="flex justify-center w-full">
             <VerificationCodeInput
               verificationCode={otp}
@@ -76,7 +75,7 @@ const SignInVerification = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center items-center py-2.5 px-4 rounded-md text-[13px] font-semibold text-black bg-[#d4ff32] hover:bg-[#bce628] transition-colors shadow-sm"
+            className="w-full max-w-[316px] sm:max-w-[348px] flex justify-center items-center py-2.5 px-4 rounded-md text-[13px] font-semibold text-black bg-[#d4ff32] hover:bg-[#bce628] transition-colors shadow-sm"
           >
             <span className="flex items-center gap-2">
               {loading ? (
