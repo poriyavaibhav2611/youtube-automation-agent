@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { getCookie, removeCookie } from '../utils/cookies';
-import { CONSTANTS } from '../utils/constant';
 
 const apiClient = axios.create({
-  baseURL: CONSTANTS.API_BASE_URL,
+  baseURL: `${import.meta.env.VITE_BACKEND_API}/api/admin`,
   headers: {
     'Content-Type': 'application/json',
   }

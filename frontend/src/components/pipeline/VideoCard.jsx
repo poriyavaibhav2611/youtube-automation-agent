@@ -4,12 +4,22 @@ import { Play, Clock, MoreVertical } from 'lucide-react';
 const VideoCard = ({ production }) => {
   return (
     <div className="bg-[#161616] border border-[#262626] rounded-xl overflow-hidden hover:border-[#3f3f46] transition-all group">
-      {/* Thumbnail Placeholder */}
-      <div className="relative aspect-video bg-[#101010] border-b border-[#262626] flex items-center justify-center group-hover:bg-[#1a1a1a] transition-colors cursor-pointer">
-        <Play size={32} className="text-[#3f3f46] group-hover:text-[#d4ff32] transition-colors" />
-        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-mono px-1.5 py-0.5 rounded">
-          10:24
-        </div>
+      {/* Thumbnail / Video Player */}
+      <div className="relative aspect-video bg-[#101010] border-b border-[#262626] flex items-center justify-center group-hover:bg-[#1a1a1a] transition-colors overflow-hidden cursor-pointer">
+        {production.voiceoverUrl ? (
+          <video 
+            src={production.voiceoverUrl}
+            controls
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <>
+            <Play size={32} className="text-[#3f3f46] group-hover:text-[#d4ff32] transition-colors" />
+            <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-mono px-1.5 py-0.5 rounded">
+              00:00
+            </div>
+          </>
+        )}
       </div>
       
       {/* Card Content */}
@@ -35,9 +45,9 @@ const VideoCard = ({ production }) => {
           
           <div className="flex items-center gap-1.5 bg-[#1c1c1c] border border-[#262626] px-2 py-1 rounded-md">
             <span className={`w-1.5 h-1.5 rounded-full ${
-              production.status === 'PUBLISHED' ? 'bg-[#d4ff32]' : 
-              production.status === 'NEEDS_REVIEW' ? 'bg-[#f59e0b]' : 
-              production.status === 'ERROR' ? 'bg-[#ef4444]' : 'bg-[#3b82f6]'
+              production.status === 'published' ? 'bg-[#d4ff32]' : 
+              production.status === 'needs_review' ? 'bg-[#f59e0b]' : 
+              production.status === 'needs_attention' ? 'bg-[#ef4444]' : 'bg-[#3b82f6]'
             }`}></span>
             <span className="text-[10px] text-[#a1a1aa] font-medium uppercase tracking-wider">
               {production.status?.replace(/_/g, ' ') || 'PROCESSING'}

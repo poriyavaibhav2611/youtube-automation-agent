@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
-import { Search, RefreshCw, Plus, Crosshair, X, ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { Search, RefreshCw, Plus, Crosshair, X, ChevronDown, CheckCircle2 } from 'lucide-react';
 import Select from '../../components/ui/Select';
 import ProfileMenu from '../../components/shared/ProfileMenu';
 import Header from '../../components/shared/Header';
+import { fetchIdeas } from '../../services/ideaService';
 
 const Calendar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [format, setFormat] = useState('Explainer');
+  const navigate = useNavigate();
+
+  const { data: backlogIdeas = [], isLoading } = useQuery({
+    queryKey: ['ideas', 'backlog'],
+    queryFn: () => fetchIdeas('backlog'),
+  });
 
   return (
     <div className="flex flex-col h-full w-full font-sans bg-[#101010] text-white relative">
@@ -46,11 +55,13 @@ const Calendar = () => {
               <h2 className="text-[16px] font-semibold text-white tracking-tight">Upcoming releases</h2>
             </div>
             
-            <div className="bg-[#161616] border border-[#262626] rounded-xl p-8 flex-1 min-h-[300px] flex flex-col items-center justify-center text-center shadow-sm">
-              <div className="w-10 h-10 rounded-full bg-[#1c1c1c] border border-[#2e2e32] flex items-center justify-center mb-4">
-                <Crosshair size={14} className="text-[#71717a]" />
+            <div className="bg-[#161616] border border-[#262626] rounded-xl flex-1 h-[calc(100vh-260px)] min-h-[400px] flex flex-col shadow-sm overflow-hidden">
+              <div className="p-6 flex-1 flex flex-col items-center justify-center text-center">
+                <div className="w-10 h-10 rounded-full bg-[#1c1c1c] border border-[#2e2e32] flex items-center justify-center mb-4">
+                  <Crosshair size={14} className="text-[#71717a]" />
+                </div>
+                <p className="text-[13px] text-[#a1a1aa] font-medium">No approved videos are scheduled.</p>
               </div>
-              <p className="text-[13px] text-[#a1a1aa] font-medium">No approved videos are scheduled.</p>
             </div>
           </div>
 
@@ -63,11 +74,42 @@ const Calendar = () => {
               <h2 className="text-[16px] font-semibold text-white tracking-tight">Content ideas</h2>
             </div>
             
-            <div className="bg-[#161616] border border-[#262626] rounded-xl p-8 flex-1 min-h-[300px] flex flex-col items-center justify-center text-center shadow-sm">
-              <div className="w-10 h-10 rounded-full bg-[#1c1c1c] border border-[#2e2e32] flex items-center justify-center mb-4">
-                <Crosshair size={14} className="text-[#71717a]" />
-              </div>
-              <p className="text-[13px] text-[#a1a1aa] font-medium">Add promising topics here before spending generation credits.</p>
+            <div className="bg-[#161616] border border-[#262626] rounded-xl flex-1 h-[calc(100vh-260px)] min-h-[400px] flex flex-col shadow-sm overflow-hidden">
+              {isLoading ? (
+                <div className="p-6 flex-1 flex flex-col items-center justify-center text-center">
+                  <RefreshCw size={18} className="text-[#a1a1aa] animate-spin mb-4" />
+                  <p className="text-[13px] text-[#a1a1aa] font-medium">Loading backlog...</p>
+                </div>
+              ) : backlogIdeas.length === 0 ? (
+                <div className="p-6 flex-1 flex flex-col items-center justify-center text-center">
+                  <div className="w-10 h-10 rounded-full bg-[#1c1c1c] border border-[#2e2e32] flex items-center justify-center mb-4">
+                    <Crosshair size={14} className="text-[#71717a]" />
+                  </div>
+                  <p className="text-[13px] text-[#a1a1aa] font-medium">Add promising topics here before spending generation credits.</p>
+                </div>
+              ) : (
+                <div className="p-4 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#262626] scrollbar-track-transparent">
+                  <div className="flex flex-col gap-2">
+                    {backlogIdeas.map((idea) => (
+                      <div 
+                        key={idea._id} 
+                        onClick={() => navigate(`/calendar/ideas/${idea._id}`)}
+                        className="bg-[#1c1c1c] border border-[#2e2e32] hover:border-[#52525b] hover:bg-[#202020] transition-all rounded-lg px-4 py-3 cursor-pointer shadow-sm group flex flex-col gap-1"
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <h4 className="text-[13px] font-semibold text-white truncate group-hover:text-[#d4ff32] transition-colors">{idea.topic}</h4>
+                          <span className="shrink-0 bg-[#262626] border border-[#3f3f46] text-[#d4ff32] text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm group-hover:bg-[#d4ff32] group-hover:text-black group-hover:border-[#d4ff32] transition-colors">{idea.format}</span>
+                        </div>
+                        {idea.angle && (
+                          <p className="text-[12px] text-[#71717a] truncate font-medium">
+                            {idea.angle}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           

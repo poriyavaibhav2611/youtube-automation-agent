@@ -17,6 +17,7 @@ import Engagement from './pages/engagement/Engagement';
 import Operator from './pages/youtube/Operator';
 import Checks from './pages/youtube/Checks';
 import Calendar from './pages/calendar/Calendar';
+import IdeaDetail from './pages/calendar/IdeaDetail';
 import Setup from './pages/setup/Setup';
 import Placeholder from './pages/Placeholder';
 
@@ -50,7 +51,19 @@ function App() {
   return (
     <BrowserRouter>
       <GlobalProviders>
-        <ToastContainer hideProgressBar={true} />
+        <ToastContainer 
+          hideProgressBar={true} 
+          theme="dark" 
+          position="bottom-right"
+          toastStyle={{ 
+            backgroundColor: '#1c1c1c', 
+            border: '1px solid #2e2e32', 
+            color: '#fff', 
+            fontSize: '14px',
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)'
+          }}
+        />
         <UserProvider>
           <Routes>
             <Route path="/login" element={<SignIn />} />
@@ -89,6 +102,12 @@ function App() {
             <Route path="/calendar" element={
               <ProtectedRoute>
                 <Layout><Calendar /></Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/calendar/ideas/:id" element={
+              <ProtectedRoute>
+                <Layout><IdeaDetail /></Layout>
               </ProtectedRoute>
             } />
             
