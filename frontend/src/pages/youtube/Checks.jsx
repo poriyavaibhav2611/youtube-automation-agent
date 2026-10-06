@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Search, RefreshCw, Crosshair } from 'lucide-react';
+import ProfileMenu from '../../components/shared/ProfileMenu';
+import Header from '../../components/shared/Header';
 
 const Checks = () => {
   const [includeImageProbe, setIncludeImageProbe] = useState(false);
@@ -8,44 +10,11 @@ const Checks = () => {
   return (
     <div className="flex flex-col h-full w-full font-sans bg-[#101010] text-white relative">
       
-      {/* Static Header */}
-      <div className="shrink-0 z-10 bg-[#161616] border-b border-[#2e2e32] px-8 py-5 flex justify-between items-center">
-        <div>
-          <h3 className="text-[11px] font-bold text-[#d4ff32] uppercase tracking-[0.15em] mb-1">
-            PRODUCTION READINESS
-          </h3>
-          <h1 className="text-[26px] font-semibold tracking-tight text-white">
-            Verify before autonomy runs.
-          </h1>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="flex items-center bg-[#1c1c1c] border border-[#2e2e32] rounded-md px-3 py-2 w-64 focus-within:border-[#a1a1aa] focus-within:ring-1 focus-within:ring-[#a1a1aa] transition-all shadow-sm">
-            <Search size={14} className="text-[#71717a] mr-2" />
-            <input 
-              type="text" 
-              placeholder="Search..." 
-              className="bg-transparent border-none outline-none text-[13px] text-white w-full placeholder-[#52525b]" 
-            />
-            <div className="flex items-center gap-1 text-[#71717a] ml-2">
-              <span className="text-[10px] bg-[#27272a] rounded px-1.5 py-0.5 border border-[#3f3f46]">⌘</span>
-              <span className="text-[10px] bg-[#27272a] rounded px-1.5 py-0.5 border border-[#3f3f46]">K</span>
-            </div>
-          </div>
-          <button 
-            onClick={() => {
-              const btn = document.getElementById('checks-refresh-icon');
-              if(btn) btn.classList.add('animate-spin');
-              setTimeout(() => {
-                if(btn) btn.classList.remove('animate-spin');
-              }, 1000);
-            }}
-            className="p-2 bg-[#1c1c1c] border border-[#2e2e32] rounded-md hover:bg-[#27272a] transition-colors shadow-sm"
-          >
-            <RefreshCw id="checks-refresh-icon" size={14} className="text-[#a1a1aa]" />
-          </button>
-        </div>
-      </div>
+            <Header 
+        subtitle="PRODUCTION READINESS"
+        title="Verify before autonomy runs."
+        refreshId="checks-refresh-icon"
+      />
 
       {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto p-8 w-full">

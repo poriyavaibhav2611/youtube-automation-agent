@@ -11,7 +11,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const token = getCookie('token');
+    const token = getCookie('yt-token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -29,7 +29,7 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      removeCookie('token');
+      removeCookie('yt-token');
       // Only redirect if not already on the login or verification page
       if (window.location.pathname !== '/login' && window.location.pathname !== '/verify-2fa') {
         window.location.href = '/login';

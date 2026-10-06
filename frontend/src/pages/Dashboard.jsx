@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import apiService from '../services/apiService';
 import { Search, Plus, ArrowUpRight, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ProfileMenu from '../components/shared/ProfileMenu';
+import Header from '../components/shared/Header';
 
 const fetchDashboardStats = async () => {
   const data = await apiService.get('/production/stats');
@@ -83,6 +85,7 @@ const Dashboard = () => {
           >
             <RefreshCw id="dashboard-refresh-icon" size={14} className="text-[#a1a1aa]" />
           </button>
+          <ProfileMenu />
         </div>
       </div>
 

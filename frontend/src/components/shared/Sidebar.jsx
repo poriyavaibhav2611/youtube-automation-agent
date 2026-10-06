@@ -30,8 +30,7 @@ const Sidebar = () => {
     } catch (error) {
       console.error('Logout API error:', error);
     } finally {
-      removeCookie('token');
-      removeCookie('username');
+      removeCookie('yt-token');
       navigate('/login');
     }
   };
@@ -48,40 +47,32 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className={`${isCollapsed ? 'w-[80px]' : 'w-64'} transition-all duration-300 ease-in-out shrink-0 bg-[#101010] text-white min-h-screen p-4 border-r border-[#262626] font-sans flex flex-col relative z-20`}>
+    <div className={`${isCollapsed ? 'w-[80px]' : 'w-64'} transition-all duration-300 ease-in-out shrink-0 bg-[#101010] text-white min-h-screen border-r border-[#262626] font-sans flex flex-col relative z-20`}>
       
-      {/* Logo & Toggle */}
-      <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} mb-6 px-1 h-8`}>
-        <div className={`flex items-center gap-2 overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0 opacity-0' : 'w-[180px] opacity-100'}`}>
-          <div className="w-6 h-6 bg-[#d4ff32] rounded flex items-center justify-center shrink-0">
-             <svg className="w-[14px] h-[14px] text-black" viewBox="0 0 24 24" fill="currentColor">
-               <path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.252,4,12,4,12,4S5.748,4,4.186,4.418 c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.748,2,12,2,12s0,4.252,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768 C5.748,20,12,20,12,20s6.252,0,7.814-0.418c0.86-0.23,1.538-0.908,1.768-1.768C22,16.252,22,12,22,12S22,7.748,21.582,6.186z M10,15.464V8.536L16,12L10,15.464z" />
-             </svg>
+      {/* Top Section matching Header Height (93px) */}
+      <div className="h-[93px] border-b border-[#2e2e32] px-4 flex flex-col justify-center shrink-0">
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} h-8`}>
+          <div className={`flex items-center gap-2 overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0 opacity-0' : 'w-[180px] opacity-100'}`}>
+            <div className="w-6 h-6 bg-[#d4ff32] rounded flex items-center justify-center shrink-0">
+               <svg className="w-[14px] h-[14px] text-black" viewBox="0 0 24 24" fill="currentColor">
+                 <path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.252,4,12,4,12,4S5.748,4,4.186,4.418 c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.748,2,12,2,12s0,4.252,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768 C5.748,20,12,20,12,20s6.252,0,7.814-0.418c0.86-0.23,1.538-0.908,1.768-1.768C22,16.252,22,12,22,12S22,7.748,21.582,6.186z M10,15.464V8.536L16,12L10,15.464z" />
+               </svg>
+            </div>
+            <h1 className="text-[17px] font-semibold text-white tracking-tight whitespace-nowrap">
+              YT Automation
+            </h1>
           </div>
-          <h1 className="text-[17px] font-semibold text-white tracking-tight whitespace-nowrap">
-            YT Automation
-          </h1>
+          <button 
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className={`text-[#71717a] hover:text-white transition-all flex items-center justify-center rounded-lg hover:bg-[#1c1c1c] ${isCollapsed ? 'w-10 h-10 mx-auto' : 'w-8 h-8 shrink-0'}`}
+          >
+            {isCollapsed ? <PanelRightClose size={18} /> : <PanelLeftClose size={18} />}
+          </button>
         </div>
-        <button 
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className={`text-[#71717a] hover:text-white transition-all flex items-center justify-center rounded-lg hover:bg-[#1c1c1c] ${isCollapsed ? 'w-10 h-10 mx-auto' : 'w-8 h-8 shrink-0'}`}
-        >
-          {isCollapsed ? <PanelRightClose size={18} /> : <PanelLeftClose size={18} />}
-        </button>
-      </div>
-      
-      {/* Primary CTA */}
-      <div className="mb-6">
-        <button className={`flex items-center justify-center bg-[#d4ff32] hover:bg-[#bce628] transition-all duration-300 rounded-xl text-[13px] font-semibold text-black shadow-sm ${isCollapsed ? 'w-10 h-10 mx-auto p-0' : 'w-full py-2.5 px-3'}`}>
-          <Plus size={18} className="shrink-0" /> 
-          <span className={`whitespace-nowrap overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0 opacity-0' : 'w-[85px] opacity-100 ml-2'}`}>
-            Create video
-          </span>
-        </button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex flex-col gap-2 flex-1 overflow-hidden">
+      <nav className="flex flex-col gap-2 flex-1 overflow-y-auto px-4 pt-4">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path || (item.name === 'Home' && location.pathname === '/');
           return (
@@ -105,20 +96,6 @@ const Sidebar = () => {
           );
         })}
       </nav>
-      
-      {/* Footer Settings & Logout */}
-      <div className="mt-auto pt-4 border-t border-[#262626] flex flex-col gap-2">
-        <div 
-          onClick={handleLogout}
-          title={isCollapsed ? "Logout" : ""}
-          className={`flex items-center text-[#a1a1aa] hover:text-[#ef4444] hover:bg-[#1c1c1c] rounded-xl cursor-pointer transition-all duration-300 text-[13px] font-medium group ${isCollapsed ? 'w-10 h-10 mx-auto justify-center' : 'w-full px-3 py-2.5'}`}
-        >
-          <LogOut size={18} className="text-[#71717a] group-hover:text-[#ef4444] transition-colors shrink-0" />
-          <span className={`whitespace-nowrap overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100 ml-3'}`}>
-            Logout
-          </span>
-        </div>
-      </div>
     </div>
   );
 };

@@ -7,7 +7,7 @@ import { useHandleError } from '../../hooks/useHandleError';
 import { Eye, EyeOff } from 'lucide-react';
 
 const SignIn = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -19,14 +19,13 @@ const SignIn = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const data = await login({ username, password });
+      const data = await login({ email, password });
       
       if (data.requires2FA) {
         navigate(`/verify-2fa?token=${data.token}`);
       } else {
-        setCookie('token', data.token);
-        setCookie('username', data.username);
-        setUser({ username: data.username });
+        setCookie('yt-token', data.token);
+        setUser({ name: data.name, email: data.email });
         navigate('/');
       }
     } catch (error) {
@@ -49,24 +48,24 @@ const SignIn = () => {
         <span className="text-white font-bold text-[17px] tracking-tight">YT Automation</span>
       </div>
 
-      <div className="w-full max-w-md p-8 rounded-xl bg-[#1c1c1c] border border-[#2e2e32] shadow-xl">
+      <div className="w-full max-w-md px-8 py-6 rounded-xl bg-[#1c1c1c] border border-[#2e2e32] shadow-xl">
         
-        <div className="text-left mb-8">
-          <h2 className="text-2xl font-semibold text-white tracking-tight mb-1">
-            Sign In
+        <div className="text-center mb-6">
+          <h2 className="text-[32px] font-semibold text-white tracking-tight mb-1">
+            Welcome back
           </h2>
-          <p className="text-[#a1a1aa] text-[13px]">Enter your details to access your account</p>
+          <p className="text-[#a1a1aa] text-[15px]">Sign in to your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="block text-[13px] font-medium text-[#a1a1aa]">Username</label>
+            <label className="block text-[13px] font-medium text-[#a1a1aa]">Email</label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username"
-              className="block w-full rounded-md bg-[#101010] border border-[#2e2e32] px-3 py-2.5 text-white text-[13px] placeholder-[#52525b] focus:border-[#d4ff32] focus:outline-none transition-colors"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="block w-full rounded-md bg-[#101010] border border-[#2e2e32] px-3 py-2.5 text-white text-[13px] placeholder-[#71717a] focus:border-[#d4ff32] focus:outline-none transition-colors"
               required
             />
           </div>
@@ -78,14 +77,14 @@ const SignIn = () => {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="block w-full rounded-md bg-[#101010] border border-[#2e2e32] px-3 py-2.5 pr-10 text-white text-[13px] placeholder-[#52525b] focus:border-[#d4ff32] focus:outline-none transition-colors"
+                placeholder="Enter your password"
+                className="block w-full rounded-md bg-[#101010] border border-[#2e2e32] px-3 py-2.5 pr-10 text-white text-[13px] placeholder-[#71717a] focus:border-[#d4ff32] focus:outline-none transition-colors"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#71717a] hover:text-white transition-colors"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#a1a1aa] hover:text-[#d4ff32] transition-colors"
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
